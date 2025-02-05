@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <iostream>
 #include <thread>
 #include <vector>
@@ -5,13 +6,17 @@
 using vector = std::vector<int>;
 
 
-vector fast_sort(vector &v)
+vector fast_sort(const vector &v)
 {
-	vector lv; // left v 
-	vector rv;	// right v
-	int pivot = (v.size() - 1) / 2;
+	if(v.size() <= 1)
+	{
+		return v;
+	}
+
+	vector lv, rv; // left v, right v
+	size_t pivot = (v.size() - 1) / 2;
 	
-	for(int i = 0; i < v.size(); ++i)
+	for(size_t i = 0; i < v.size(); ++i)
 	{
 		if (pivot == i)
 		{
@@ -36,6 +41,25 @@ vector fast_sort(vector &v)
 	return lv;
 }
 
+vector bubble_sort(const vector& v)
+{
+	vector res = v;
+	for (size_t i = 0; i < res.size(); ++i)
+	{
+		for (size_t j = 0; j < res.size() - i - 1; ++j)
+		{
+			if (res[j] > res[j + 1]){
+				int temp = res[j];
+				res[j] = res[j + 1];
+				res[j + 1] = temp;
+			}
+		}
+	}
+
+	return res;
+}
+
+
 void print_vector(const vector &v)
 {
 	for(const auto& num : v){
@@ -49,13 +73,19 @@ void print_vector(const vector &v)
 
 int main()
 {
-	std::vector v = {11, 12, 1, 4, 5, 6, 3};
-	//std::thread t1();
-	//std::thread t2();
-	fast_sort(v);	
-	print_vector(v);
-//	t1.join();
-//	t2.join();
+	vector v = {11, 12, 1, 4, 5, 6, 3};
+	std::thread t1([&v](){
+		vector fast_v = fast_sort(v);
+		print_vector(fast_v);
+	});
+
+	std::thread t2([&v](){
+		vector bub_v = bubble_sort(v);
+		print_vector(bub_v);
+	});
+	
+	t1.join();
+	t2.join();
 
 	return 0;
 }
