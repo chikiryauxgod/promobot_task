@@ -1,7 +1,7 @@
-#include <cstddef>
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <algorithm>
 
 using vector = std::vector<int>;
 
@@ -23,7 +23,7 @@ vector fast_sort(const vector &v)
 			continue;
 		}
 		
-		int curr = v[i];
+		auto curr = v[i];
 		if (curr >= v[pivot]){
 			rv.push_back(curr);
 		}
@@ -49,9 +49,11 @@ vector bubble_sort(const vector& v)
 		for (size_t j = 0; j < res.size() - i - 1; ++j)
 		{
 			if (res[j] > res[j + 1]){
-				int temp = res[j];
+				
+				std::swap(res[j], res[j + 1]);	
+				/* int temp = res[j];
 				res[j] = res[j + 1];
-				res[j + 1] = temp;
+				res[j + 1] = temp; */
 			}
 		}
 	}
