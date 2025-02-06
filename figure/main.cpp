@@ -4,6 +4,13 @@
 #include <memory>
 #include <cmath>
 
+enum class FigureType
+{
+	Circle,
+	Triangle,
+	Rectangle
+};
+
 class Figure
 {
 public:
@@ -58,14 +65,33 @@ private:
 	double heigth;
 };
 
+std::unique_ptr<Figure> CreateFigure(FigureType type)
+{
+	std::unique_ptr<Figure> pfigure(nullptr);
+
+	if (type == FigureType::Circle){
+		pfigure = std::make_unique<Circle>(5);
+	}
+
+	if (type == FigureType::Triangle){
+		pfigure = std::make_unique<Triangle>(3, 4, 5);
+	}
+
+	if (type == FigureType::Rectangle){
+		pfigure = std::make_unique<Rectangle>(4, 6);
+	}
+
+	return pfigure;
+}
+
 
 int main()
 {
 	std::vector<std::unique_ptr<Figure>> figures;
 
-    figures.push_back(std::make_unique <Circle>(5));
-    figures.push_back(std::make_unique <Triangle>(3, 4, 5));
-    figures.push_back(std::make_unique <Rectangle>(4, 6));
+	figures.push_back(CreateFigure(FigureType::Circle));
+	figures.push_back(CreateFigure(FigureType::Triangle));
+	figures.push_back(CreateFigure(FigureType::Rectangle));
 
 	std::sort(figures.begin(), figures.end(), [](const std::unique_ptr<Figure>& a, const std::unique_ptr<Figure>& b) -> bool{
 		return *a < *b;
