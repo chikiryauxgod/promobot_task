@@ -1,7 +1,8 @@
 #include <iostream>
 #include <vector>
-#include <cmath>
+#include <algorithm>
 #include <memory>
+#include <cmath>
 
 class Figure
 {
@@ -15,10 +16,10 @@ public:
 
 };
 
-class Circle : public Figure 
+class Circle final : public Figure 
 {
 public:
-	Circle(int r) : radius{r} {}
+	explicit Circle(double r) : radius{r} {}
 
 	double Square() const override
 	{
@@ -26,14 +27,14 @@ public:
 	}
 
 private:
-	int radius;
+	double radius;
 
 };
 
-class Triangle : public Figure
+class Triangle final : public Figure
 {
 public:
-	Triangle(int a, int b, int c) : sides{a, b, c} {}
+	Triangle(double a, double b, double c) : sides{a, b, c} {}
 
 	double Square() const override
 	{
@@ -43,19 +44,19 @@ public:
 	}
 
 private:
-	std::vector<int> sides;
+	std::vector<double> sides;
 
 };
 
-class Rectangle : public Figure
+class Rectangle final : public Figure
 {
 public:
-	Rectangle(int w, int h) : width{w}, heigth{h} {}
+	Rectangle(double w, double h) : width{w}, heigth{h} {}
 	double Square() const override { return width * heigth; }
 
 private:
-	int width;
-	int heigth;
+	double width;
+	double heigth;
 };
 
 
@@ -67,12 +68,13 @@ int main()
     figures.push_back(std::make_unique <Triangle>(3, 4, 5));
     figures.push_back(std::make_unique <Rectangle>(4, 6));
 
-	// std::sort(figures.begin(), figures.end())
+	std::sort(figures.begin(), figures.end(), [](const std::unique_ptr<Figure>& a, const std::unique_ptr<Figure>& b) -> bool{
+		return *a < *b;
+	});
+
     for (const auto& figure : figures){
         std::cout << "Square: " << figure->Square() << std::endl;
     }
-
-    return 0;
 
 	return 0;
 }
