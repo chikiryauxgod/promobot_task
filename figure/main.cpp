@@ -38,14 +38,13 @@ public:
 
 	double Square() const override
 	{
-		int p = (sides[0] + sides[1] + sides[2]) / 2;
+		double p = (sides[0] + sides[1] + sides[2]) / 2;
 		double area = sqrt(p * (p - sides[0]) * (p - sides[1]) * (p - sides[2]));
 		return area;
 	}
 
 private:
 	std::vector<double> sides;
-
 };
 
 class Rectangle final : public Figure
